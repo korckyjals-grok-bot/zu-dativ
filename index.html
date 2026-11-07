@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alemán: zu + Dativ</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:linear-gradient(160deg,#fff6d6,#d9f2ff);color:#1f2a44;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:16px}h1{text-align:center;font-size:1.85rem;margin:10px 0}h2{font-size:1.45rem;margin:8px 0}
+.card{background:#fff;border-radius:20px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,.1);margin:14px 0}
+.btn{display:block;width:100%;font-size:1.25rem;padding:16px;margin:8px 0;border:0;border-radius:16px;cursor:pointer;color:#fff;background:#2b8de2;font-weight:700;min-height:52px;touch-action:manipulation}
+.btn.g{background:#22a35a}.btn.o{background:#f08a24}.btn.r{background:#c7362b}.btn.gray{background:#8a94a8}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row .btn{flex:1;min-width:140px}
+.topics label{display:block;font-size:1.2rem;padding:12px;background:#e8f3ff;border-radius:12px;margin:6px 0;cursor:pointer}
+.topics input{transform:scale(1.5);margin-right:12px}
+.q{font-size:1.4rem;font-weight:700;margin:6px 0 14px;word-wrap:break-word}.opt{background:#eef1f6;color:#1f2a44;text-align:left}
+.opt.ok{background:#22a35a;color:#fff}.opt.bad{background:#c7362b;color:#fff}
+.exp{font-size:1.1rem;background:#fff6d6;border-left:6px solid #ffbf00;padding:12px;border-radius:10px;margin-top:10px}
+.stats{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:700;flex-wrap:wrap;gap:8px}
+.tag{display:inline-block;padding:4px 10px;border-radius:10px;background:#ffd9cc;font-size:.95rem;font-weight:700}
+.fc{min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.3rem;cursor:pointer;background:#e8f3ff;padding:16px}
+.timer{font-size:2rem;text-align:center;font-weight:800;color:#c7362b}.hid{display:none}.msg{font-size:1.25rem;text-align:center;font-weight:700;min-height:1.6em}
+ul{font-size:1.05rem}li{margin:6px 0}
+.chk{display:inline-block;margin-left:10px;background:#22a35a;color:#fff;border-radius:50%;width:2rem;height:2rem;line-height:2rem;text-align:center;font-size:1.3rem;font-weight:900;vertical-align:middle}.chk.no{display:none}
+.sen{font-size:1.4rem;background:#f4f7fb;border-radius:14px;padding:12px;margin:0 0 12px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+.chip{font-size:1.25rem;padding:12px 14px;border:0;border-radius:12px;background:#e8f3ff;color:#1f2a44;font-weight:700;cursor:pointer;min-height:48px}.chip:disabled{opacity:.3}
+.built{min-height:3.2rem;font-size:1.35rem;background:#fff6d6;border-radius:12px;padding:10px;text-align:center;font-weight:700}
+.de{font-weight:800;color:#1f5fd1}.hint{font-size:1rem;color:#5a6478;text-align:center}
+a.back{color:#2b8de2;font-weight:700;text-decoration:none}
+</style>
+</head><body><div class="wrap">
+<p style="margin:0"><a class="back" href="https://korckyjals-grok-bot.github.io/aleman/" data-app="https://korckyjals-grok-bot.github.io/aleman/">⬅️ Alemán</a></p>
+<h1>🇩🇪 zu + Dativ · Orte</h1>
+<div id="home" class="card">
+<p style="font-size:1.15rem;text-align:center">¡Hola, <span class="nm">amiguito</span>! Practica <span class="de">zum</span> / <span class="de">zur</span> y oraciones con <span class="de">geht</span> y <span class="de">fährt</span>. <a href="#" onclick="cambiarNombre();return false" style="font-size:.9rem;color:#2b8de2;white-space:nowrap">✏️ Cambiar apodo</a></p>
+<button class="btn g" onclick="showStudy()">📖 Estudiar</button>
+<div class="topics" id="topics">
+<label><input type="checkbox" value="art" checked>🏷️ Lugares: der / die / das<span class="chk no" data-t="art">✔</span></label>
+<label><input type="checkbox" value="zum" checked>➡️ zur y zum<span class="chk no" data-t="zum">✔</span></label>
+<label><input type="checkbox" value="sen" checked>🚶🚗 Oraciones geht / fährt<span class="chk no" data-t="sen">✔</span></label>
+<label><input type="checkbox" value="ord" checked>🧩 Ordenar oraciones<span class="chk no" data-t="ord">✔</span></label>
+</div>
+<div class="row"><button class="btn" onclick="startPractice()">✏️ Practicar</button><button class="btn o" onclick="startChallenge()">⏱️ Desafío 60 s</button></div>
+<p style="text-align:center;font-size:1.05rem">✅ Desafío con <b>13 o más y sin errores</b> = check verde por tema.<br>🏆 Récord: <b id="best">0</b><br><span class="hint">En el desafío no hay ordenar (solo opción múltiple rápida).</span></p>
+</div>
+<div id="study" class="card hid">
+<h2 id="stTitle"></h2><div class="row" id="stTabs"></div>
+<div id="fc" class="card fc" onclick="flip()"></div>
+<p style="text-align:center">Toca la tarjeta para ver la explicación</p>
+<div class="row"><button class="btn gray" onclick="moveFc(-1)">⬅️ Anterior</button><button class="btn" onclick="moveFc(1)">Siguiente ➡️</button></div>
+<button class="btn r" onclick="home()">🏠 Inicio</button>
+</div>
+<div id="play" class="card hid">
+<div class="stats"><span>✅ <span id="sc">0</span></span><span>🔥 Racha: <span id="st">0</span></span><span id="cnt"></span></div>
+<div id="tm" class="timer hid"></div>
+<p><span class="tag" id="tg"></span></p>
+<div class="q" id="qt"></div><div id="sen" class="sen"></div><div id="opts"></div>
+<div id="msg" class="msg"></div><div id="exp" class="exp hid"></div>
+<button class="btn g hid" id="nx" onclick="goNext()">Siguiente ➡️</button>
+<button class="btn r" onclick="finish()">Terminar</button>
+</div>
+<div id="sum" class="card hid"><h2 id="sumT"></h2><p id="sumP" style="font-size:1.15rem"></p><div id="sumL"></div>
+<button class="btn o hid" id="rep" onclick="repeatErrors()">🔁 Repasar errores</button>
+<button class="btn" onclick="home()">🏠 Inicio</button></div>
+</div>
+
+<script>
+/* Places from worksheet: gender + zur/zum */
+const PL=[
+{n:"Bäckerei",g:"die",z:"zur",ex:"die Bäckerei"},
+{n:"Post",g:"die",z:"zur",ex:"die Post"},
+{n:"Eisdiele",g:"die",z:"zur",ex:"die Eisdiele"},
+{n:"Krankenhaus",g:"das",z:"zum",ex:"das Krankenhaus"},
+{n:"Bahnhof",g:"der",z:"zum",ex:"der Bahnhof"},
+{n:"Schule",g:"die",z:"zur",ex:"die Schule"},
+{n:"Kino",g:"das",z:"zum",ex:"das Kino"},
+{n:"Apotheke",g:"die",z:"zur",ex:"die Apotheke"},
+{n:"Bank",g:"die",z:"zur",ex:"die Bank"},
+{n:"Rathaus",g:"das",z:"zum",ex:"das Rathaus"}
+];
+/* Explicit motion context: never ask geht vs fährt without clear cue */
+const MOV=[
+{who:"Mustafa",verb:"geht",how:"camina",p:"Bäckerei"},
+{who:"Frau Müller",verb:"geht",how:"va caminando",p:"Post"},
+{who:"Maya",verb:"geht",how:"camina",p:"Eisdiele"},
+{who:"Herr Khan",verb:"fährt",how:"va en auto",p:"Krankenhaus"},
+{who:"Frau Winter",verb:"geht",how:"camina",p:"Apotheke"},
+{who:"Julian",verb:"geht",how:"va a pie",p:"Bank"},
+{who:"Herr Hamdan",verb:"fährt",how:"va en vehículo",p:"Bahnhof"},
+{who:"Herr und Frau Krause",verb:"gehen",how:"caminan",p:"Rathaus"},
+{who:"Ibrahim",verb:"fährt",how:"va en carro",p:"Rathaus"},
+{who:"Jasmin",verb:"fährt",how:"va en autobús",p:"Schule"},
+{who:"Nele",verb:"geht",how:"camina",p:"Bäckerei"},
+{who:"Selma",verb:"geht",how:"va a pie",p:"Bahnhof"},
+{who:"Sabia",verb:"geht",how:"camina",p:"Rathaus"},
+{who:"Die Kinder",verb:"gehen",how:"caminan",p:"Eisdiele"},
+{who:"Die Kinder",verb:"gehen",how:"van caminando",p:"Schule"},
+{who:"Herr Winter",verb:"fährt",how:"conduce",p:"Krankenhaus"},
+{who:"Frau Khan",verb:"geht",how:"camina",p:"Post"},
+{who:"Tom",verb:"fährt",how:"va en bicicleta",p:"Kino"},
+{who:"Lina",verb:"geht",how:"va caminando",p:"Apotheke"},
+{who:"Oma",verb:"geht",how:"camina",p:"Bank"}
+];
+function place(name){return PL.find(p=>p.n===name)}
+function zPhrase(p){return p.z+" "+p.n}
+
+const CK="aleman_check_zudativ",BK="zudativ_best";
+let chalT=[];
+function getCk(){try{return JSON.parse(localStorage.getItem(CK)||"[]")}catch(e){return[]}}
+function drawCk(){const c=getCk();document.querySelectorAll(".chk").forEach(e=>e.classList.toggle("no",!c.includes(e.dataset.t)))}
+const TN={art:"Lugares y artículos",zum:"zur / zum",sen:"geht / fährt",ord:"Ordenar oraciones"};
+const CARDS={
+art:[
+["¿Qué aprendemos?","Los lugares tienen género: <b>der</b> (masculino), <b>die</b> (femenino), <b>das</b> (neutro)."],
+["Femeninos (die)","die Bäckerei · die Post · die Eisdiele · die Schule · die Apotheke · die Bank"],
+["Masculino y neutros","der Bahnhof<br>das Krankenhaus · das Kino · das Rathaus"],
+["Truco","Aprende el artículo junto con el lugar: no digas solo «Bahnhof», di <b>der Bahnhof</b>."]
+],
+zum:[
+["Regla de oro","<b>zum</b> = zu + dem → para <b>der</b> y <b>das</b><br><b>zur</b> = zu + der → para <b>die</b> (singular)"],
+["Ejemplos zur","zur Bäckerei · zur Post · zur Eisdiele · zur Schule · zur Apotheke · zur Bank"],
+["Ejemplos zum","zum Bahnhof · zum Krankenhaus · zum Kino · zum Rathaus"],
+["¿Por qué?","Después de <b>zu</b> usamos dativo. dem + zu se contrae en <b>zum</b>; der + zu en <b>zur</b>."]
+],
+sen:[
+["geht = caminar","<b>geht</b> / <b>gehen</b> = va / van caminando (a pie).<br>Mustafa <b>geht</b> zur Bäckerei."],
+["fährt = vehículo","<b>fährt</b> = va en vehículo (auto, bus, bici…).<br>Herr Khan <b>fährt</b> zum Krankenhaus."],
+["¡Ojo!","Solo elige geht o fährt si el contexto lo dice claro: «camina», «va en auto», «conduce»…"],
+["Oraciones modelo","Frau Müller geht zur Post.<br>Ibrahim fährt zum Rathaus.<br>Die Kinder gehen zur Schule."]
+],
+ord:[
+["Orden alemán","Sujeto + verbo + zur/zum + lugar.<br>Maya geht zur Eisdiele."],
+["Preguntas","El verbo va al inicio: <b>Fährt</b> Herr Hamdan zum Bahnhof?<br><b>Gehen</b> die Kinder zur Schule?"],
+["Mayúscula","Los sustantivos en alemán siempre empiezan con mayúscula: Schule, Bahnhof, Post."]
+]
+};
+
+const $=id=>document.getElementById(id);
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function uniq(opts,need){const u=[];for(const o of opts){if(!u.includes(o))u.push(o);if(u.length>=need)break}return u}
+
+const G={
+art:[
+()=>{const p=rnd(PL);const wrong=shuf(PL.filter(x=>x.g!==p.g).map(x=>x.g));return{q:"¿Qué artículo va con este lugar?",sen:p.n,o:uniq([p.g,...wrong],3),e:`Se dice <b>${p.ex}</b>. Género: ${p.g}.`}},
+()=>{const p=rnd(PL);const wrong=shuf(PL.filter(x=>x.n!==p.n&&x.g===p.g).map(x=>x.n));const other=shuf(PL.filter(x=>x.g!==p.g).map(x=>x.n));return{q:`¿Cuál lugar es «${p.g} …»?`,sen:"",o:uniq([p.n,...wrong.slice(0,1),...other],3),e:`Correcto: <b>${p.ex}</b>.`}},
+()=>{const fem=PL.filter(p=>p.g==="die");const p=rnd(fem);return{q:"¿Cuál de estos es femenino (die)?",sen:"",o:uniq([p.n,...shuf(PL.filter(x=>x.g!=="die").map(x=>x.n))],3),e:`<b>die ${p.n}</b> es femenino → luego usamos <b>zur</b>.`}},
+()=>{const m=PL.filter(p=>p.g!=="die");const p=rnd(m);return{q:"¿Cuál NO es femenino?",sen:"",o:uniq([p.n,...shuf(PL.filter(x=>x.g==="die").map(x=>x.n))],3),e:`<b>${p.ex}</b> → ${p.g}. Por eso va <b>${p.z}</b>.`}}
+],
+zum:[
+()=>{const p=rnd(PL);return{q:"Completa: ¿zur o zum?",sen:"_____ "+p.n,o:uniq([p.z,p.z==="zur"?"zum":"zur","zu dem","zu die"].filter((v,i,a)=>a.indexOf(v)===i),3),e:`${p.ex} → ${p.g==="die"?"zu + der = <b>zur</b>":"zu + dem = <b>zum</b>"} (${p.z} ${p.n}).`}},
+()=>{const p=rnd(PL);const phrase=zPhrase(p);const wrong=shuf(PL.filter(x=>x.z!==p.z).map(x=>zPhrase(x)));return{q:"¿Cuál combinación es correcta?",sen:"",o:uniq([phrase,...wrong],3),e:`${p.ex}: <b>${phrase}</b>.`}},
+()=>{const p=rnd(PL.filter(x=>x.g!=="die"));return{q:"¿Por qué usamos zum aquí?",sen:"zum "+p.n,o:["Porque es der o das (zu + dem)","Porque es die (zu + der)","Porque es plural"],e:`<b>${p.ex}</b> es ${p.g}. zu + dem = <b>zum</b>.`}},
+()=>{const p=rnd(PL.filter(x=>x.g==="die"));return{q:"Elige la forma correcta:",sen:"Frau Winter geht _____ Apotheke.",o:uniq(["zur","zum","zu dem","zu die"],3),e:`die Apotheke → zu + der = <b>zur</b> Apotheke.`}},
+()=>{const p=rnd(PL);return{q:`¿Qué significa ${p.z}?`,sen:p.z+" "+p.n,o:p.z==="zum"?["zu + dem","zu + der","zu + die"]:["zu + der","zu + dem","zu + das"],e:`<b>${p.z}</b> = ${p.z==="zum"?"zu + dem":"zu + der"} · ${p.ex}.`}}
+],
+sen:[
+()=>{const m=rnd(MOV);const p=place(m.p);const phrase=zPhrase(p);return{q:`¿Cómo se completa? (${m.how})`,sen:`${m.who} ${m.verb} _____.`,o:uniq([phrase,...shuf(PL.filter(x=>x.n!==p.n).map(zPhrase))],3),e:`${m.who} ${m.verb} <b>${phrase}</b>. (${p.ex} → ${p.z})`}},
+()=>{const m=rnd(MOV.filter(x=>x.verb==="geht"||x.verb==="fährt"));const wrong=m.verb==="geht"?"fährt":"geht";return{q:`El contexto dice: «${m.how}». ¿Qué verbo?`,sen:`${m.who} _____ ${zPhrase(place(m.p))}.`,o:[m.verb,wrong,m.verb==="geht"?"fahren":"gehen"],e:`«${m.how}» → <b>${m.verb}</b>. geht = a pie; fährt = en vehículo.`}},
+()=>{const m=rnd(MOV);const p=place(m.p);const full=`${m.who} ${m.verb} ${zPhrase(p)}.`;const bad1=`${m.who} ${m.verb} ${(p.z==="zur"?"zum":"zur")} ${p.n}.`;const bad2=`${m.who} ${m.verb==="geht"?"fährt":m.verb==="fährt"?"geht":m.verb} ${zPhrase(p)}.`;return{q:"¿Cuál oración está bien escrita?",sen:`Pista: ${m.how}`,o:uniq([full,bad1,bad2],3),e:`Correcta: <b>${full}</b>`}},
+()=>{const m=rnd(MOV.filter(x=>/Herr Hamdan|Die Kinder|Gehen|Fährt/.test(x.who)||true));const p=place(m.p);const qform=m.verb.startsWith("geh")?`Gehen ${m.who.toLowerCase().startsWith("die")?m.who:m.who} ${zPhrase(p)}?`:null;
+  /* worksheet questions */
+  const bank=[
+    {q:"Completa la pregunta:",sen:"Fährt Herr Hamdan _____ Bahnhof?",o:["zum","zur","zu der"],e:"der Bahnhof → zu + dem = <b>zum</b> Bahnhof.",right:"zum"},
+    {q:"Completa la pregunta:",sen:"Gehen die Kinder _____ Schule?",o:["zur","zum","zu dem"],e:"die Schule → zu + der = <b>zur</b> Schule.",right:"zur"}
+  ];
+  const b=rnd(bank);return{q:b.q,sen:b.sen,o:b.o,e:b.e,right:b.right}},
+()=>{const examples=[
+  {sen:"Mustafa geht zur Bäckerei.",ok:true,e:"Mustafa camina → geht; die Bäckerei → zur."},
+  {sen:"Herr Khan fährt zum Krankenhaus.",ok:true,e:"Va en auto → fährt; das Krankenhaus → zum."},
+  {sen:"Maya geht zum Eisdiele.",ok:false,e:"die Eisdiele es femenino → <b>zur</b> Eisdiele."},
+  {sen:"Julian geht zur Bank.",ok:true,e:"die Bank → zur Bank."},
+  {sen:"Frau Winter geht zum Apotheke.",ok:false,e:"die Apotheke → <b>zur</b> Apotheke."}
+];
+  const ex=rnd(examples);return{q:"¿Esta oración está correcta?",sen:ex.sen,o:ex.ok?["Sí, está correcta","No, está mal"]:["No, está mal","Sí, está correcta"],e:ex.e}}
+],
+ord:[
+()=>{const m=rnd(MOV);const p=place(m.p);const zp=zPhrase(p).split(" ");
+  return{q:"Toca las partes en orden para armar la oración:",ord:[m.who,m.verb,zp[0],zp[1]],e:`Orden: sujeto + verbo + ${zp[0]} + lugar → <b>${m.who} ${m.verb} ${zPhrase(p)}.</b> (${m.how})`}},
+()=>{const pairs=[["Frau Winter","geht","zur","Apotheke"],["Julian","geht","zur","Bank"],["Nele","geht","zur","Bäckerei"],["Ibrahim","fährt","zum","Rathaus"],["Selma","geht","zum","Bahnhof"]];
+  const o=rnd(pairs);return{q:"Ordena la oración:",ord:o,e:`${o[0]} ${o[1]} ${o[2]} ${o[3]}.`}}
+]
+};
+
+$("best").textContent=localStorage.getItem(BK)||0;
+function show(id){["home","study","play","sum"].forEach(x=>$(x).classList.toggle("hid",x!==id))}
+function home(){stop();drawCk();$("best").textContent=localStorage.getItem(BK)||0;document.querySelectorAll(".nm").forEach(e=>e.textContent=NM());show("home")}
+let fcT="art",fcI=0,fcF=false;
+function showStudy(){$("stTabs").innerHTML=Object.keys(TN).map(k=>`<button class="btn ${k==fcT?'g':'gray'}" onclick="fcT='${k}';fcI=0;showStudy()">${TN[k]}</button>`).join("");fcF=false;drawFc();show("study")}
+function drawFc(){const c=CARDS[fcT][fcI];$("fc").innerHTML=fcF?`<div>${c[1]}</div>`:`<b>${c[0]}</b>`;$("stTitle").textContent=`📖 ${TN[fcT]} (${fcI+1}/${CARDS[fcT].length})`}
+function flip(){fcF=!fcF;drawFc()}
+function moveFc(d){const n=CARDS[fcT].length;fcI=(fcI+d+n)%n;fcF=false;drawFc()}
+function stop(){if(timer){clearInterval(timer);timer=null}}
+const $sel=()=>{const s=[...document.querySelectorAll("#topics input:checked")].map(i=>i.value);return s.length?s:Object.keys(TN)};
+let topics=[],cur=null,score=0,streak=0,done=0,missedL=[],answered=false,chal=false,timer=null,left=0,lastT="",repeatQ=[];
+function begin(t,isChal){topics=t;score=0;streak=0;done=0;missedL=[];chal=isChal;$("sc").textContent=0;$("st").textContent=0;show("play");stop();
+if(chal){left=60;$("tm").classList.remove("hid");$("tm").textContent="⏱️ 60";timer=setInterval(()=>{left--;$("tm").textContent="⏱️ "+left;if(left<=0)finish()},1000)}else $("tm").classList.add("hid");next()}
+function startPractice(){repeatQ=[];begin($sel(),false)}
+function startChallenge(){repeatQ=[];chalT=$sel();begin(chalT,true)}
+function repeatErrors(){repeatQ=missedL.slice();begin(Object.keys(TN),false)}
+function gen(){
+  if(repeatQ.length)return repeatQ.shift();
+  for(let i=0;i<80;i++){
+    const c=rnd(topics);
+    let gs=G[c];
+    if(chal){if(c==="ord")continue;gs=G[c];}
+    const q=rnd(gs)();
+    if(!q)continue;
+    q.c=c;
+    if(q.right){/* keep */} else if(q.ord){} else q.right=q.o[0];
+    const key=q.sen||q.q+(q.right||"");
+    if(key!==lastT&&(q.ord||new Set(q.o).size===q.o.length))return q;
+  }
+  /* fallback */
+  const p=rnd(PL);return{c:"zum",q:"¿zur o zum?",sen:"_____ "+p.n,o:[p.z,p.z==="zur"?"zum":"zur"],right:p.z,e:`${p.ex} → ${p.z}`};
+}
+let lock=0;function goNext(){if(Date.now()-lock<400)return;lock=Date.now();next()}
+function next(){cur=gen();lastT=cur.sen||cur.q;answered=false;$("tg").textContent=TN[cur.c];$("qt").textContent=cur.q;$("sen").innerHTML=cur.sen||"";$("sen").classList.toggle("hid",!cur.sen);$("cnt").textContent="Preguntas: "+done;
+$("opts").innerHTML="";$("msg").textContent="";$("exp").classList.add("hid");$("nx").classList.add("hid");
+if(cur.ord){cur.right=cur.ord.join(" ")+".";const built=[];const bx=document.createElement("div");bx.className="built";bx.textContent="…";const ch=document.createElement("div");ch.className="chips";
+let sh=shuf(cur.ord.map((w,i)=>[w,i]));while(sh.length>1&&sh.every((x,i)=>x[1]==i))sh=shuf(sh);
+sh.forEach(([w])=>{const c=document.createElement("button");c.className="chip";c.textContent=w;c.onclick=()=>{if(answered)return;c.disabled=true;built.push(w);bx.textContent=built.join(" ");if(built.length==cur.ord.length){const s=built.join(" ")+".";answer(null,s,bx)}};ch.appendChild(c)});
+const rs=document.createElement("button");rs.className="btn gray";rs.textContent="↩️ Borrar";rs.onclick=()=>{if(answered)return;built.length=0;bx.textContent="…";[...ch.children].forEach(x=>x.disabled=false)};
+$("opts").append(bx,ch,rs);return}
+const opts=shuf(cur.o.slice());
+opts.forEach(o=>{const b=document.createElement("button");b.className="btn opt";b.textContent=o;b.onclick=()=>answer(b,o);$("opts").appendChild(b)})}
+const GOOD=["¡Muy bien! 🎉","¡Excelente! ⭐","¡Correcto! 👏","¡Eres un crack! 🚀","¡Súper! 💪"];
+function answer(b,o,bx){if(answered)return;answered=true;done++;const ok=o===cur.right;
+if(bx){bx.style.background=ok?"#c9f1d8":"#ffd6d1";if(!ok)bx.innerHTML="Tu oración: "+o+"<br>✔️ "+cur.right}
+else[...$("opts").children].forEach(x=>{if(x.textContent===cur.right)x.classList.add("ok")});
+if(ok){score++;streak++;$("msg").textContent=rnd(GOOD)+(streak>=3?` ¡Racha de ${streak}! 🔥`:"")}
+else{if(b)b.classList.add("bad");streak=0;missedL.push(cur);$("msg").textContent="¡Casi! Mira la respuesta correcta 💡"}
+$("sc").textContent=score;$("st").textContent=streak;$("cnt").textContent="Preguntas: "+done;
+if(chal){setTimeout(()=>{if(chal&&left>0)next()},ok?600:1800);return}
+$("exp").innerHTML="ℹ️ "+cur.e;$("exp").classList.remove("hid");$("nx").classList.remove("hid")}
+function finish(){stop();const wasChal=chal;chal=false;let t="¡Buen trabajo, "+NM()+"! 🌟";
+if(wasChal){const best=+(localStorage.getItem(BK)||0);if(score>best){localStorage.setItem(BK,score);t="🏆 ¡Nuevo récord: "+score+"!"}}
+if(wasChal&&score>=13&&done===score){const c=getCk();chalT.forEach(x=>{if(!c.includes(x))c.push(x)});localStorage.setItem(CK,JSON.stringify(c));drawCk();t="✅ ¡Tema superado! "+score+" sin errores. ¡Bravo, "+NM()+"!"}
+$("sumT").textContent=t;$("sumP").textContent=`Respondiste bien ${score} de ${done} preguntas.`;
+$("sumL").innerHTML=missedL.length?"<h3>Para repasar:</h3><ul>"+missedL.map(q=>`<li><b>${q.q}</b> ${q.sen||""}<br>✔️ ${q.right} — ${q.e}</li>`).join("")+"</ul>":"<p>¡No tuviste errores! 🎉</p>";
+$("rep").classList.toggle("hid",!missedL.length);show("sum")}
+drawCk();
+window.__TEST__=()=>({cur,score,done,chal,missedL,finish,getCk,CK,BK,topics:()=>topics,setScore:(s,d)=>{score=s;done=d;$("sc").textContent=s;$("cnt").textContent="Preguntas: "+d},forceChal:(t)=>{chal=true;chalT=t||Object.keys(TN)}});
+</script>
+<div id="nmBox" style="display:none;position:fixed;inset:0;background:rgba(31,42,68,.55);z-index:99;align-items:center;justify-content:center;padding:16px">
+<form id="nmForm" style="background:#fff;border-radius:20px;padding:24px;max-width:420px;width:100%;text-align:center;font-family:inherit">
+<p style="font-size:1.4rem;font-weight:700;margin:0 0 12px">👋 ¿Cómo te llamamos?</p>
+<p style="font-size:1.05rem;margin:0 0 12px">Apodo opcional (no hace falta tu nombre real)</p>
+<input id="nmIn" maxlength="20" autocomplete="off" style="width:100%;font-size:1.4rem;padding:12px;border:2px solid #2b8de2;border-radius:12px;text-align:center">
+<button type="submit" style="width:100%;font-size:1.3rem;padding:14px;margin-top:12px;border:0;border-radius:14px;background:#22a35a;color:#fff;font-weight:700;cursor:pointer">¡Listo! ✅</button>
+<button type="button" onclick="document.getElementById('nmBox').style.display='none'" style="width:100%;font-size:1.1rem;padding:12px;margin-top:8px;border:0;border-radius:14px;background:#8a94a8;color:#fff;font-weight:700;cursor:pointer">Seguir como amiguito</button>
+</form></div>
+<script>
+(function(){
+const K="sociales_nombre";
+function clean(s){return (s||"").replace(/[<>"]/g,"").trim().slice(0,20)}
+try{const q=clean(new URLSearchParams(location.search).get("nombre"));if(q)localStorage.setItem(K,q)}catch(e){}
+window.NM=function(){try{return clean(localStorage.getItem(K))||"amiguito"}catch(e){return"amiguito"}};
+function apply(){document.querySelectorAll(".nm").forEach(e=>e.textContent=NM());
+const n=(function(){try{return clean(localStorage.getItem(K))}catch(e){return""}})();
+document.querySelectorAll("a[data-app]").forEach(a=>{a.href=a.dataset.app+(n?"?nombre="+encodeURIComponent(n):"")})}
+window.cambiarNombre=function(){const b=document.getElementById("nmBox"),i=document.getElementById("nmIn");i.value=NM()=="amiguito"?"":NM();b.style.display="flex";i.focus()};
+document.getElementById("nmForm").onsubmit=function(ev){ev.preventDefault();const v=clean(document.getElementById("nmIn").value);if(!v){document.getElementById("nmIn").focus();return}
+try{localStorage.setItem(K,v)}catch(e){}document.getElementById("nmBox").style.display="none";apply()};
+apply();
+})();
+</script>
+</body></html>
